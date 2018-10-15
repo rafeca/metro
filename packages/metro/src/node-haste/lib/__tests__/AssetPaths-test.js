@@ -11,6 +11,8 @@
 
 'use strict';
 
+jest.mock('path', () => require.requireActual('path').posix);
+
 var AssetPaths = require('../AssetPaths');
 
 const TEST_PLATFORMS = new Set(['ios', 'android']);

@@ -38,9 +38,10 @@ beforeEach(() => {
 
 it('sends a socket path to the child process', () => {
   socketResponse = '{}';
-  return worker([], fakeSourceMaps()).then(() =>
-    expect(childProcess.send).toBeCalledWith(expect.any(String)),
-  );
+  return worker([], fakeSourceMaps()).then(() =>{
+    expect(childProcess.send).toBeCalledWith(expect.any(String));
+    console.log(childProcess.send.mock.calls);
+  });
 });
 
 it('fails if the child process emits an error', () => {

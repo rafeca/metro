@@ -11,6 +11,8 @@
 
 'use strict';
 
+jest.mock('path', () => require.requireActual('path').posix);
+
 const FailedToResolvePathError = require('../FailedToResolvePathError');
 const Resolver = require('../index');
 

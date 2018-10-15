@@ -11,6 +11,8 @@
 
 'use strict';
 
+jest.mock('path', () => require.requireActual('path').posix);
+
 declare var jest: any;
 
 const multipleFilesRamBundle = require('../multiple-files-ram-bundle');
