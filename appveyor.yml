@@ -15,7 +15,7 @@ cache:
 
 test_script:
   - yarn run build
-  - yarn test
+  - yarn jest
 
 # Don't actually build.
 build: off
