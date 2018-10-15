@@ -9,6 +9,8 @@
  */
 'use strict';
 
+jest.mock('path', () => require.requireActual('path').posix);
+
 const HmrServer = require('..');
 
 describe('HmrServer', () => {
