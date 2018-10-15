@@ -51,7 +51,9 @@ describe('code transformation worker:', () => {
   beforeEach(() => {
     jest.resetModules();
 
-    jest.mock('fs', () => new (require('metro-memory-fs'))());
+    jest.mock('fs', () => new (require('metro-memory-fs'))({
+      platform: process.platform === 'win32' ? 'win32' : 'posix',
+    }));
 
     fs = require('fs');
     mkdirp = require('mkdirp');
