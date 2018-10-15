@@ -80,7 +80,7 @@ describe('traverseDependencies', function() {
         ),
         transform: async path => {
           let dependencies = [];
-          const sourceCode = fs.readFileSync(path, 'utf8');
+          const sourceCode = require('fs').readFileSync(path, 'utf8');
 
           if (!path.endsWith('.json')) {
             dependencies = extractDependencies(sourceCode);
@@ -111,7 +111,7 @@ describe('traverseDependencies', function() {
   beforeEach(function() {
     jest.resetModules();
     jest.mock('fs', () => new (require('metro-memory-fs'))({
-      platform: process.platform,
+      platform: process.platform === 'win32' ? 'win32' : 'posix',
     }));
 
     fs = require('fs');
@@ -1915,6 +1915,7 @@ describe('traverseDependencies', function() {
   describe('node_modules (posix)', function() {
     let DependencyGraph;
     let processDgraph;
+    let UnableToResolveError;
 
     beforeEach(function() {
       Object.defineProperty(process, 'platform', {
@@ -1922,6 +1923,20 @@ describe('traverseDependencies', function() {
         enumerable: true,
         value: 'linux',
       });
+
+      jest.resetModules();
+
+      jest.mock('path', () => require.requireActual('path').posix);
+      jest.mock(
+        'fs',
+        () => new (require('metro-memory-fs'))({platform: 'posix'}),
+      );
+
+      fs = require('fs');
+
+      ({
+        UnableToResolveError,
+      } = require('../../node-haste/DependencyGraph/ModuleResolution'));
 
       DependencyGraph = require('../../node-haste/DependencyGraph');
       processDgraph = processDgraphFor.bind(null, DependencyGraph);
@@ -3257,6 +3272,7 @@ describe('traverseDependencies', function() {
     let DependencyGraph;
     let processDgraph;
     let fs;
+    let UnableToResolveError;
 
     beforeEach(function() {
       Object.defineProperty(process, 'platform', {
@@ -3265,9 +3281,20 @@ describe('traverseDependencies', function() {
         value: 'linux',
       });
 
+      jest.resetModules();
+
+      jest.mock('path', () => require.requireActual('path').posix);
+      jest.mock(
+        'fs',
+        () => new (require('metro-memory-fs'))({platform: 'posix'}),
+      );
+
       DependencyGraph = require('../../node-haste/DependencyGraph');
       processDgraph = processDgraphFor.bind(null, DependencyGraph);
       fs = require('fs');
+      ({
+        UnableToResolveError,
+      } = require('../../node-haste/DependencyGraph/ModuleResolution'));
     });
 
     it('updates module dependencies', async () => {
