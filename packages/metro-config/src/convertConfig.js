@@ -10,6 +10,8 @@
 
 'use strict';
 
+jest.mock('path', () => require.requireActual('path').posix);
+
 const TerminalReporter = require('metro/src/lib/TerminalReporter');
 
 const getDefaultConfig = require('./defaults');
