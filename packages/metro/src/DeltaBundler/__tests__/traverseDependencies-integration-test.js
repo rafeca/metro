@@ -110,7 +110,9 @@ describe('traverseDependencies', function() {
 
   beforeEach(function() {
     jest.resetModules();
-    jest.mock('fs', () => new (require('metro-memory-fs'))());
+    jest.mock('fs', () => new (require('metro-memory-fs'))({
+      platform: process.platform,
+    }));
 
     fs = require('fs');
     traverseDependencies = require('../traverseDependencies');
