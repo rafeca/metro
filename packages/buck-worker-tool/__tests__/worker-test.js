@@ -12,7 +12,7 @@
 
 jest
   .mock('console')
-  .mock('fs', () => new (require('metro-memory-fs'))())
+  .mock('fs', () => new (require('metro-memory-fs'))({platform: process.platform}))
   .mock('temp', () => ({
     path() {
       return '/tmp/repro.args';
