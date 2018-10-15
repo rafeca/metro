@@ -49,6 +49,8 @@ describe('processRequest', () => {
 
     global.Date = NativeDate;
 
+    jest.mock('path', () => require.requireActual('path').posix);
+
     Bundler = require('../../Bundler');
     Server = require('../');
     crypto = require('crypto');
@@ -206,8 +208,6 @@ describe('processRequest', () => {
 
     let i = 0;
     crypto.randomBytes.mockImplementation(() => `XXXXX-${i++}`);
-
-    fs.realpathSync = jest.fn().mockReturnValue(() => '/root/foo.js');
   });
 
   it('returns JS bundle source on request of *.bundle', async () => {
