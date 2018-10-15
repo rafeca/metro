@@ -10,7 +10,9 @@
 
 'use strict';
 
-jest.mock('fs', () => new (require('metro-memory-fs'))());
+jest.mock('fs', () => new (require('metro-memory-fs'))({
+  platform: process.platform === 'win32' ? 'win32' : 'posix',
+}));
 jest.mock('image-size');
 
 const {getAssetData, getAsset} = require('../Assets');
